@@ -45,7 +45,7 @@
                 <div class="navbar-bg"></div>
                 <div class="navbar-inner">
                     <div class="left"><i class="icon icon-back"></i></div>
-                    <div class="title">Page Title</div>
+                    <div class="title">Mi primera App</div>
                     <div class="right"><i class="icon icon-forward"></i></div>
                 </div>
             </div>
@@ -64,33 +64,51 @@
                 <!-- Scrollable page content -->
                 <div class="page-content">
                     <div class="block">
-                        <p>Page content goes here</p>
-                        <!-- Link to another page -->
-                        <a href="/about/">About app</a>
 
-                        <!-- In data-popup attribute we specify CSS selector of popup we need to open -->
-                        <p><a href="#" data-popup=".my-popup" class="popup-open">Open Popup</a></p>
+                        <!-- Aca va mi codigo -->
+    
+                        <div class="page-content login-screen-content">
+                            <div class="login-screen-title">Aplicacion de reservas</div>
+                            <!-- Login form -->
+                            <form>
+                              <div class="list">
+                                <ul>
+                                  <li class="item-content item-input">
+                                    <div class="item-inner">
+                                      <div class="item-title item-label">Correo electronico</div>
+                                      <div class="item-input-wrap">
+                                        <input type="text" name="username" placeholder="Ingrese el correo" />
+                                        <span class="input-clear-button"></span>
+                                      </div>
+                                    </div>
+                                  </li>
+                                  <li class="item-content item-input">
+                                    <div class="item-inner">
+                                      <div class="item-title item-label">Contraseña</div>
+                                      <div class="item-input-wrap">
+                                        <input type="password" name="password" placeholder="Ingrese la contraseña" />
+                                        <span class="input-clear-button"></span>
+                                      </div>
+                                    </div>
+                                  </li>
+                                </ul>
+                              </div>
+                              <div class="list">
+                                <ul>
+                                  <li>
+                                    <button class="col button button-large button-raised button-fill"> Ingresar</button>
+                                    
+                                    <a href="#" class="list-button">Registrar</a>
+                                  </li>
+                                </ul>
+                                
+                              </div>
+                              
+                            </form>
+                          </div>
+                        
 
-                        <!-- And somewhere in DOM -->
-                        <div class="popup my-popup">
-                            <div class="view">
-                                <div class="page">
-                                    <div class="navbar">
-                                        <div class="navbar-bg"></div>
-                                        <div class="navbar-inner">
-                                            <div class="title">Popup</div>
-                                            <div class="right">
-                                                <!-- Link to close popup -->
-                                                <a class="link popup-close">Close</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="page-content">
-                                      ...
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
                     </div>
                 </div>
             </div>
