@@ -98,13 +98,24 @@
                                   <li>
                                     <button class="col button button-large button-raised button-fill"> Ingresar</button>
                                     
-                                    <a href="#" class="list-button">Registrar</a>
+                                    
                                   </li>
                                 </ul>
                                 
                               </div>
                               
                             </form>
+                            <div class="list">
+                              <ul>
+                                <li>
+                                  <a href="/registro/" class="list-button">Registrar</a>
+    
+                                </li>
+
+                              </ul>
+                            </div>
+                            
+                            
                           </div>
                         
 
@@ -116,6 +127,25 @@
     </div>
 
 
+    <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-app.js"></script>
+    <!-- <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-storage.js"></script> -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-auth.js"></script>
+    <!-- <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-firestore.js"></script> -->
+
+    <script>
+      const firebaseConfig = {
+      apiKey: "AIzaSyDNZzdInfXlIzNYGM14N_2M2RxgXUJdCik",
+      authDomain: "proyectofinalcomunidadit.firebaseapp.com",
+      projectId: "proyectofinalcomunidadit",
+      storageBucket: "proyectofinalcomunidadit.appspot.com",
+      messagingSenderId: "176002880547",
+      appId: "1:176002880547:web:a5b4429875a5a28f028d96"
+      };
+      //Inicializando firebase
+      firebase.initializeApp(firebaseConfig);
+    </script>
+
+    
     <script type="text/javascript" src="cordova.js"></script>
     <!--<script type="text/javascript" src="lib/framework7/framework7-bundle.min.js"></script>-->
     <script type="text/javascript" src="lib/framework7/framework7.js"></script>
