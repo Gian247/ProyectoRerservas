@@ -60,7 +60,7 @@
             </div>
         
         <!-- Initial Page, "data-name" contains page name -->
-            <div data-name="index" class="page">
+            <div class="page" data-name="index" >
                 <!-- Scrollable page content -->
                 <div class="page-content">
                     <div class="block">
@@ -70,14 +70,14 @@
                         <div class="page-content login-screen-content">
                             <div class="login-screen-title">Aplicacion de reservas</div>
                             <!-- Login form -->
-                            <form>
+                            
                               <div class="list">
                                 <ul>
                                   <li class="item-content item-input">
                                     <div class="item-inner">
                                       <div class="item-title item-label">Correo electronico</div>
                                       <div class="item-input-wrap">
-                                        <input type="text" name="username" placeholder="Ingrese el correo" />
+                                        <input type="text" name="username" id="loEmail" placeholder="Ingrese el correo" />
                                         <span class="input-clear-button"></span>
                                       </div>
                                     </div>
@@ -86,7 +86,7 @@
                                     <div class="item-inner">
                                       <div class="item-title item-label">Contraseña</div>
                                       <div class="item-input-wrap">
-                                        <input type="password" name="password" placeholder="Ingrese la contraseña" />
+                                        <input type="password" name="password" id="loPassword" placeholder="Ingrese la contraseña" />
                                         <span class="input-clear-button"></span>
                                       </div>
                                     </div>
@@ -96,7 +96,7 @@
                               <div class="list">
                                 <ul>
                                   <li>
-                                    <button class="col button button-large button-raised button-fill"> Ingresar</button>
+                                    <button id="btnIngreso" class="col button button-large button-raised button-fill"> Ingresar</button>
                                     
                                     
                                   </li>
@@ -104,7 +104,7 @@
                                 
                               </div>
                               
-                            </form>
+                            
                             <div class="list">
                               <ul>
                                 <li>
@@ -114,6 +114,7 @@
 
                               </ul>
                             </div>
+                            <div id="msgErrorLogin" class="block"></div>
                             
                             
                           </div>

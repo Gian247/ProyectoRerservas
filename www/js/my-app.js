@@ -18,15 +18,25 @@ var app = new Framework7({
       {
         path: '/registro/', url:'registro.html',
       },
+      {
+        path: '/panelUser/', url:'panelUser.html',
+      },
+      {
+        path: '/index/', url:'index.html',
+      },
+
     ]
     // ... other parameters
   });
 
+
+//
 var mainView = app.views.create('.view-main');
 
 // Handle Cordova Device Ready Event
 $$(document).on('deviceready', function() {
     console.log("Device is ready!");
+   
     // email="asi@lavate.com";
     // password="123gatitos";
     // firebase.auth().createUserWithEmailAndPassword(email, password)
@@ -48,13 +58,16 @@ $$(document).on('deviceready', function() {
 $$(document).on('page:init', function (e) {
     // Do something here when page loaded and initialized
     console.log(e);
+    
+    
 })
+$$(document).on('page:init', '.page[data-name="index"]', function (e) {
+  // Do something here when page with data-name="about" attribute loaded and initialized
+  console.log(e);
+  console.log("pagina registro");
+  $$('#btnIngreso').on('click',fnIngresa);
+  
 
-// Option 2. Using live 'page:init' event handlers for each page
-$$(document).on('page:init', '.page[data-name="about"]', function (e) {
-    // Do something here when page with data-name="about" attribute loaded and initialized
-    console.log(e);
-    alert('Hello');
 })
 $$(document).on('page:init', '.page[data-name="registro"]', function (e) {
   // Do something here when page with data-name="about" attribute loaded and initialized
@@ -65,8 +78,12 @@ $$(document).on('page:init', '.page[data-name="registro"]', function (e) {
 
 })
 function fnRegistro(){
+  
   let email=$$('#rEmail').val();
   let password=$$('#rPassword').val();
+ 
+
+  //Promesa
   firebase.auth().createUserWithEmailAndPassword(email, password)
        .then((userCredential) => {
        // Signed in
@@ -74,12 +91,60 @@ function fnRegistro(){
        // ...
        console.log("Usuario Creado");
        $$('#msgErrorRegistro').html("Bienvenido a mi aplicacion movil!!");
+       mainView.router.navigate('/panelUser/');
      })
      .catch((error) => {
        var errorCode = error.code;
        var errorMessage = error.message;
        console.error(errorCode+"     "+errorMessage);
-       $$('#msgErrorRegistro').html("Upss.. credeciales no validas "+errorCode);
+       switch(errorCode){
+        case "auth/invalid-email ":
+          mensaje="El correo electronico no es valido";
+          break;
+        case "my-app.js:81 auth/weak-password":
+          mensaje="Contraseña ingresada demasiada corta ";
+          break;
+        case "auth/email-already-in-use":
+          mensaje="Correo ingresado ya esta en uso";
+          break;
+        default:
+          mensaje="Intentelo nuevamente"
+
+       }
+       $$('#msgErrorRegistro').html("Upss.. "+mensaje);
        // ..
      });
+}
+function fnIngresa(){
+  let email=$$('#loEmail').val();
+  let password=$$('#loPassword').val();
+
+  //Codigo de Firebase
+  firebase.auth().signInWithEmailAndPassword(email, password)
+  .then((userCredential) => {
+    // Signed in
+    var user = userCredential.user;
+    console.log("BIenvenido a mi app");
+    mainView.router.navigate('/panelUser/');
+    // ...
+  })
+  .catch((error) => {
+    var errorCode = error.code;
+    var errorMessage = error.message;
+    console.error(errorCode+"   "+errorMessage);
+    switch(errorCode){
+      case "auth/invalid-email":
+        mensaje="El correo no tiene el formato requerido";
+        break;
+      case "auth/user-not-found":
+        mensaje="Cuenta no encontrada";
+        break;
+      
+      default:
+        mensaje="Comprobar credenciales"
+
+     }
+     $$('#msgErrorLogin').html("Upss.. "+mensaje);
+
+  });
 }
