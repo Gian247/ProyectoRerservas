@@ -1,0 +1,88 @@
+<!-- We don't need a full layout in this file because this page will be parsed with Ajax.  -->
+<div class="page" data-name="registro-datos">
+    <div class="navbar">
+        <div class="navbar-inner sliding">
+        <div class="left">
+            <a href="#" class="link back">
+            <i class="icon icon-back"></i>
+            <span class="ios-only">Back</span>
+            </a>
+        </div>
+        <div class="title">Registrese en la aplicación con los datos requeridos</div>
+        </div>
+    </div>
+    <div class="page-content">
+        <div class="block-title">Completa los datos</div>
+        
+        <!-- Aca comienza el codigo -->
+
+        <<div class="list no-hairlines-md">
+            <ul>
+                <li class="item-content item-input">
+                    <div class="item-inner">
+                        <div class="item-title item-label">Nombres: </div>
+                        <div class="item-input-wrap">
+                            <input id="rNombre" type="text" placeholder="Ingrese su nombre completo" required validate />
+                            <span class="input-clear-button"></span>
+                        </div>
+                    </div>
+                </li>
+                <li class="item-content item-input">
+                    <div class="item-inner">
+                        <div class="item-title item-label">Apellidos: </div>
+                        <div class="item-input-wrap">
+                            <input id="rApellido" type="text" placeholder="Ingrese sus apellidos" required validate />
+                            <span class="input-clear-button"></span>
+                        </div>
+                    </div>
+                </li>
+                <li class="item-content item-input">
+                    <div class="item-inner">
+                        <div class="item-title item-label">Pais: </div>
+                        <div class="item-input-wrap">
+                            <input id="rPais" type="text" placeholder="Ingrese su contraseña" required validate />
+                            <span class="input-clear-button"></span>
+                        </div>
+                    </div>
+                </li>
+                <li class="item-content item-input">
+                    <div class="item-inner">
+                        <div class="item-title item-label">Fecha: </div>
+                        <div class="item-input-wrap">
+                            <input id="rHora" type="time" placeholder="Ingrese su contraseña" required validate />
+                            <span class="input-clear-button"></span>
+                        </div>
+                    </div>
+                </li>
+                <li class="item-content item-input">
+                    <div class="item-inner">
+                        <div class="item-title item-label">Hora: </div>
+                        <div class="item-input-wrap">
+                            <input id="rFechaHora" type="datetime-local" placeholder="Ingrese su contraseña" required validate  />
+                            <span class="input-clear-button"></span>
+                        </div>
+                    </div>
+                </li>
+                
+                
+            </ul>
+            <div id="msgErrorRegistro" class="block">
+
+            </div>
+            <div class="list">
+                <ul>
+                  <li>
+                    <button id="btnRegistroFin" class="col button button-large button-raised button-fill"> Registrarme</button>
+                    
+                    
+                  </li>
+                </ul>
+                
+              </div>
+        </div>
+
+        
+        <!-- Aca termina el codigo -->
+
+    </div>
+</div>

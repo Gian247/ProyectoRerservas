@@ -2,149 +2,364 @@
 var $$ = Dom7;
 
 var app = new Framework7({
-    // App root element
-    root: '#app',
-    // App Name
-    name: 'My App',
-    // App id
-    id: 'com.myapp.test',
-    // Enable swipe panel
-    panel: {
-      swipe: 'left',
+  // App root element
+  root: "#app",
+  // App Name
+  name: "My App",
+  // App id
+  id: "com.myapp.test",
+  // Enable swipe panel
+  panel: {
+    swipe: "left",
+  },
+  // Add default routes
+  routes: [
+    {
+      path: "/registro/",
+      url: "registro.html",
     },
-    // Add default routes
-    routes: [
-      
-      {
-        path: '/registro/', url:'registro.html',
-      },
-      {
-        path: '/panelUser/', url:'panelUser.html',
-      },
-      {
-        path: '/index/', url:'index.html',
-      },
-
-    ]
-    // ... other parameters
-  });
-
+    {
+      path: "/panelUser/",
+      url: "panelUser.html",
+    },
+    {
+      path: "/index/",
+      url: "index.html",
+    },
+    {
+      path:"/registro-datos/",
+      url:"registro-datos.html",
+    },
+    {
+      path:"/panelAdmin/",
+      url:"panelAdmin.html",
+    },
+  ],
+  // ... other parameters
+});
 
 //
-var mainView = app.views.create('.view-main');
+var mainView = app.views.create(".view-main");
+var db,email;
+var colPersonas;
+var rol="developer";
 
 // Handle Cordova Device Ready Event
-$$(document).on('deviceready', function() {
-    console.log("Device is ready!");
-   
-    // email="asi@lavate.com";
-    // password="123gatitos";
-    // firebase.auth().createUserWithEmailAndPassword(email, password)
-    //   .then((userCredential) => {
-    //   // Signed in
-    //   var user = userCredential.user;
-    //   // ...
-    //   console.log("Usuario Creado");
-    // })
-    // .catch((error) => {
-    //   var errorCode = error.code;
-    //   var errorMessage = error.message;
-    //   console.error(errorCode+"     "+errorMessage);
-    //   // ..
-    // });
+$$(document).on("deviceready", function () {
+  console.log("Device is ready!");
+  db = firebase.firestore();
+  //Referenciando la collecion de datos personas
+  colPersonas = db.collection("Usuarios");
+
+  sembrado();
+
+  // email="asi@lavate.com";
+  // password="123gatitos";
+  // firebase.auth().createUserWithEmailAndPassword(email, password)
+  //   .then((userCredential) => {
+  //   // Signed in
+  //   var user = userCredential.user;
+  //   // ...
+  //   console.log("Usuario Creado");
+  // })
+  // .catch((error) => {
+  //   var errorCode = error.code;
+  //   var errorMessage = error.message;
+  //   console.error(errorCode+"     "+errorMessage);
+  //   // ..
+  // });
 });
 
 // Option 1. Using one 'page:init' handler for all pages
-$$(document).on('page:init', function (e) {
-    // Do something here when page loaded and initialized
-    console.log(e);
-    
-    
-})
-$$(document).on('page:init', '.page[data-name="index"]', function (e) {
+$$(document).on("page:init", function (e) {
+  // Do something here when page loaded and initialized
+  console.log(e);
+});
+$$(document).on("page:init", '.page[data-name="index"]', function (e) {
   // Do something here when page with data-name="about" attribute loaded and initialized
   console.log(e);
   console.log("pagina registro");
-  $$('#btnIngreso').on('click',fnIngresa);
-  
-
-})
-$$(document).on('page:init', '.page[data-name="registro"]', function (e) {
+  $$("#btnIngreso").on("click", fnIngresa);
+});
+$$(document).on("page:init", '.page[data-name="registro"]', function (e) {
   // Do something here when page with data-name="about" attribute loaded and initialized
   console.log(e);
   console.log("pagina registro");
-  $$('#btnRegistro').on('click',fnRegistro);
-  
+  $$("#btnRegistro").on("click", fnRegistro);
+});
+$$(document).on("page:init", '.page[data-name="registro-datos"]', function (e) {
+  // Do something here when page with data-name="about" attribute loaded and initialized
+  console.log(e);
+  console.log("pagina registro de llos datos");
+  $$("#btnRegistroFin").on("click", fnRegistroFin);
+});
+$$(document).on("page:init", '.page[data-name="panelUser"]', function (e) {
+  // Do something here when page with data-name="about" attribute loaded and initialized
+  dataCardUser=`
+    <div class="card card-outline">
+      <div class="card-header">Bienvenido ${nombre} ${apellido}</div>
+      <div class="card-content card-content-padding">Pais de procedencia: ${pais}</div>
+      <div class="card-footer">Cargo en la institución: ${rol}</div>
+    </div>
+  `;
+  $$('#datoPersonalesUser').html(dataCardUser);
 
-})
-function fnRegistro(){
   
-  let email=$$('#rEmail').val();
-  let password=$$('#rPassword').val();
- 
+  
+});
+$$(document).on("page:init", '.page[data-name="panelAdmin"]', function (e) {
+  // Do something here when page with data-name="about" attribute loaded and initialized
+  
+  colPersonas.where("rol", "==", "developer")
+    .get()
+    .then((querySnapshot) => {
+      var listaUser="";
+        querySnapshot.forEach((doc) => {
+            // doc.data() is never undefined for query doc snapshots
+            //console.log(doc.id, " => ", doc.data().nombre);
+            
+            nombre=doc.data().nombre;
+              apellido=doc.data().apellido;
+              pais=doc.data().pais;
+              hora=doc.data().hora;
+              fechahora=doc.data().fechaHora;
+              rolUsuario=doc.data().rol;
+              emailUserCard=doc.id;
+              
+
+              listaUser+=`
+              <div class="card card-outline">
+                <div class="card-header">Correo Identificador: ${emailUserCard}</div>
+                <div class="card-content card-content-padding">
+                  <div class="row">
+                    <div class="col-100">Nombre: ${nombre}</div>
+                    <div class="col-100">Apellido: ${apellido}</div>
+                    <div class="col-100">Pais: ${pais}</div>
+                  </div>
+                </div>
+                <div class="card-footer">Cargo en la institución: ${rolUsuario}</div>
+              </div>
+              `;
+
+              console.log(listaUser);
+              
+             
+
+        });
+        $$('#datosCuentasUsuarios').html(listaUser);
+        
+    })
+    .catch((error) => {
+        console.log("Error getting documents: ", error);
+    });
+
+  
+});
+
+//FUnciones de acciones del programa
+
+function fnRegistroFin(){
+  //Obtiene el valor de la varible de email para adjuntar en ese identificador sus datos
+
+  //Identificador
+  elId=email;
+  //Recuperando los datos del formulario
+  nombre=$$('#rNombre').val();
+  apellido=$$('#rApellido').val();
+  pais=$$('#rPais').val();
+  hora=$$('#rHora').val();
+  fechaHora=$$('#rFechaHora').val();
+
+  //Construyo el objeto de datos JSON:
+
+  var datos={
+    nombre:nombre,
+    apellido:apellido,
+    pais:pais,
+    hora:hora,
+    fechaHora:fechaHora,
+    rol:rol
+  }
+  colPersonas.doc(elId).set(datos)
+  .then(function(ok){
+    console.log("registro correcto en la base de datos");
+    mainView.router.navigate('/panelUser/');
+
+  })
+  .catch(function(e){console.log("Error en bd "+e)})
+
+}
+
+function fnRegistro() {
+  email = $$("#rEmail").val();
+  let password = $$("#rPassword").val();
 
   //Promesa
-  firebase.auth().createUserWithEmailAndPassword(email, password)
-       .then((userCredential) => {
-       // Signed in
-       var user = userCredential.user;
-       // ...
-       console.log("Usuario Creado");
-       $$('#msgErrorRegistro').html("Bienvenido a mi aplicacion movil!!");
-       mainView.router.navigate('/panelUser/');
-     })
-     .catch((error) => {
-       var errorCode = error.code;
-       var errorMessage = error.message;
-       console.error(errorCode+"     "+errorMessage);
-       switch(errorCode){
+  firebase.auth().createUserWithEmailAndPassword(email, password).then((userCredential) => {
+      // Signed in
+      var user = userCredential.user;
+      // ...
+      console.log("Usuario Creado");
+      $$("#msgErrorRegistro").html("Bienvenido a mi aplicacion movil!!");
+      //Derivando al panel del usuario
+      mainView.router.navigate("/registro-datos/");
+    })
+    .catch((error) => {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      console.error(errorCode + "     " + errorMessage);
+      switch (errorCode) {
         case "auth/invalid-email ":
-          mensaje="El correo electronico no es valido";
+          mensaje = "El correo electronico no es valido";
           break;
         case "my-app.js:81 auth/weak-password":
-          mensaje="Contraseña ingresada demasiada corta ";
+          mensaje = "Contraseña ingresada demasiada corta ";
           break;
         case "auth/email-already-in-use":
-          mensaje="Correo ingresado ya esta en uso";
+          mensaje = "Correo ingresado ya esta en uso";
           break;
         default:
-          mensaje="Intentelo nuevamente"
-
-       }
-       $$('#msgErrorRegistro').html("Upss.. "+mensaje);
-       // ..
-     });
+          mensaje = "Intentelo nuevamente";
+      }
+      $$("#msgErrorRegistro").html("Upss.. " + mensaje);
+      // ..
+    });
 }
-function fnIngresa(){
-  let email=$$('#loEmail').val();
-  let password=$$('#loPassword').val();
+
+//Variables globales para el 
+function fnIngresa() {
+  let email = $$("#loEmail").val();
+  let password = $$("#loPassword").val();
 
   //Codigo de Firebase
   firebase.auth().signInWithEmailAndPassword(email, password)
-  .then((userCredential) => {
-    // Signed in
-    var user = userCredential.user;
-    console.log("BIenvenido a mi app");
-    mainView.router.navigate('/panelUser/');
-    // ...
-  })
-  .catch((error) => {
-    var errorCode = error.code;
-    var errorMessage = error.message;
-    console.error(errorCode+"   "+errorMessage);
-    switch(errorCode){
-      case "auth/invalid-email":
-        mensaje="El correo no tiene el formato requerido";
-        break;
-      case "auth/user-not-found":
-        mensaje="Cuenta no encontrada";
-        break;
+    .then((userCredential) => {
+      // Signed in
+      var user = userCredential.user;
+      console.log("BIenvenido a mi app");
       
-      default:
-        mensaje="Comprobar credenciales"
+      //Se le direcciona de acuerdo al perfil que tenga en la base de datos
 
-     }
-     $$('#msgErrorLogin').html("Upss.. "+mensaje);
+      var docRef = colPersonas.doc(email);
 
-  });
+      docRef.get().then((doc) => {
+          if (doc.exists) {
+              nombre=doc.data().nombre;
+              apellido=doc.data().apellido;
+              pais=doc.data().pais;
+              hora=doc.data().hora;
+              fechahora=doc.data().fechaHora;
+              rolUsuario=doc.data().rol;
+              if(rolUsuario=="admin"){
+                mainView.router.navigate('/panelAdmin/');
+
+              }else{
+                mainView.router.navigate('/panelUser/');
+              }
+
+              console.log("Document data:", doc.data());
+          } else {
+        // doc.data() will be undefined in this case
+              console.log("No such document!");
+          }
+      }).catch((error) => {
+    console.log("Error getting document:", error);
+      });
+
+
+
+      //mainView.router.navigate("/panelUser/");
+      // ...
+    })
+    .catch((error) => {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      console.error(errorCode + "   " + errorMessage);
+      switch (errorCode) {
+        case "auth/invalid-email":
+          mensaje = "El correo no tiene el formato requerido";
+          break;
+        case "auth/user-not-found":
+          mensaje = "Cuenta no encontrada";
+          break;
+
+        default:
+          mensaje = "Comprobar credenciales";
+      }
+      $$("#msgErrorLogin").html("Upss.. " + mensaje);
+    });
+}
+
+//Ingreso de datos a la base de datos
+function sembrado() {
+  console.log("Iniciando el sembrado de datos");
+  //Crear a los usuarios desde el servicio de autenticacion, si este me da un ok, recien se genera el dato en la
+  //base de datos
+  var data = {
+    nombre: "Admin",
+    apellidos: "Uno",
+    rol: "admin",
+  };
+  elId = "uno@admin.com";
+  clave = "admin1";
+  firebase.auth().createUserWithEmailAndPassword(elId, clave)
+    .then(function () {
+      colPersonas.doc(elId).set(data)
+        .then(function (ok) {
+          console.log("Nuevo Ok");
+        })
+        .catch(function (error) {
+          console.log("Error INgreso: " + error);
+        });
+    })
+    .catch(function (e) {
+      console.log("Error Validacion: " + e);
+    });
+
+  var data2 = {
+    nombre: "Admin",
+    apellidos: "Dos",
+    rol: "admin",
+  };
+  elId2 = "dos@admin.com";
+  clave2 = "admin2";
+
+  firebase.auth().createUserWithEmailAndPassword(elId2, clave2)
+    .then(function () {
+      colPersonas.doc(elId2).set(data2)
+        .then(function (ok) {
+        console.log("Nuevo ok 2");
+        })
+        .catch(function (e) {
+        console.log("error INgreso: " + e);
+        });
+    })
+    .catch(function (e) {
+      console.log("Error Validacion: " + e);
+    });
+  //ANTIGUA FORMA
+
+  // var data={
+  //   nombre:"Pepe",
+  //   apellidos:"Flores",
+  //   rol:"developer"
+  // };
+  // elId="pepe@dev.com";
+
+  // colPersonas.doc(elId).set(data)
+  // .then(function(ok){
+  //   console.log("Nuevo Ok");
+  // })
+  // .catch(function(error){
+  //   console.log("Error: "+error);
+  // })
+  // var data2={
+  //   nombre:"Anita",
+  //   apellidos:"Mendoza",
+  //   rol:"developer"
+  // }
+  // elId2="maria@dev.com";
+  // colPersonas.doc(elId2).set(data2)
+  // .then(function(ok){console.log("Nuevo ok 2");})
+  // .catch(function(e){console.log("error: "+e);})
 }
