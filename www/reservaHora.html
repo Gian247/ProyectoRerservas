@@ -1,5 +1,5 @@
 <!-- We don't need a full layout in this file because this page will be parsed with Ajax.  -->
-<div class="page" data-name="1Lunes">
+<div class="page" data-name="reservaHora">
     <div class="navbar">
         <div class="navbar-inner sliding">
         <div class="left">
@@ -26,7 +26,7 @@
                 <div class="item-inner">
                   <div class="item-title item-label">Aula solicitada</div>
                   <div class="item-input-wrap">
-                    <select name="aulaGrado" id="aulaSolicitada1Lunes" required validate>
+                    <select name="aulaGrado" id="aulaSolicitada" required validate>
                       <option value="">--Seleccione salon--</option>
                       <option value="8-Bach">8 Bach</option>
                       <option value="9-Garcia">9 Garcia</option>
@@ -47,7 +47,7 @@
                 <div class="item-inner">
                   <div class="item-title item-label">Ingrese la cantidad de equipos</div>
                   <div class="item-input-wrap">
-                    <input type="text" id="cantidad1Lunes" placeholder="Enter number" required validate pattern="[0-9]*"
+                    <input type="text" id="cantidadEquipos" placeholder="Enter number" required validate pattern="[0-9]*"
                       data-error-message="Only numbers please!" />
                     <span class="input-clear-button"></span>
                     <div class="item-input-info"></div>
@@ -61,7 +61,7 @@
 
         </form>
         <div class="block">
-          <button id="rSolicitud1Lunes">Registrar solicitud</button>
+          <button id="rSolicitudRegistro">Registrar solicitud</button>
         </div>
         
           

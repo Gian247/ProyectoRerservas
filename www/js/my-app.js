@@ -35,32 +35,12 @@ var app = new Framework7({
       url:"panelAdmin.html",
     },
     {
-      path:"/reservaLunes/",
-      url:"reservaLunes.html",
+      path:"/reservaDia/",
+      url:"reservaDia.html",
     },
     {
-      path:"/1Lunes/",
-      url:"1Lunes.html",
-    },
-    {
-      path:"/1Martes/",
-      url:"1Martes.html",
-    },
-    {
-      path:"/reservaMartes/",
-      url:"reservaMartes.html",
-    },
-    {
-      path:"/reservaMiercoles/",
-      url:"reservaMiercoles.html",
-    },
-    {
-      path:"/reservaJueves/",
-      url:"reservaJueves.html",
-    },
-    {
-      path:"/reservaViernes/",
-      url:"reservaViernes.html",
+      path:"/reservaHora/",
+      url:"reservaHora.html",
     },
     
   ],
@@ -71,11 +51,10 @@ var app = new Framework7({
 var mainView = app.views.create(".view-main");
 var db,email;
 var colPersonas;
-var colLunes;
-var colMartes;
 var rol="developer";
-var hsolicitadaLunes;
-var hsolicitadaMartes;
+var seleccionDia;
+var direccionBaseDatos;
+var hSolicitadaDia;
 
 // Handle Cordova Device Ready Event
 $$(document).on("deviceready", function () {
@@ -83,8 +62,7 @@ $$(document).on("deviceready", function () {
   db = firebase.firestore();
   //Referenciando la collecion de datos personas
   colPersonas = db.collection("Usuarios");
-  colLunes=db.collection("Lunes");
-  colMartes=db.collection("Martes");
+  
 
   sembrado();
 
@@ -128,6 +106,9 @@ $$(document).on("page:init", '.page[data-name="registro-datos"]', function (e) {
   console.log("pagina registro de llos datos");
   $$("#btnRegistroFin").on("click", fnRegistroFin);
 });
+
+//*************Panel del usuario********* */
+
 $$(document).on("page:init", '.page[data-name="panelUser"]', function (e) {
   // Do something here when page with data-name="about" attribute loaded and initialized
   dataCardUser=`
@@ -138,6 +119,28 @@ $$(document).on("page:init", '.page[data-name="panelUser"]', function (e) {
     </div>
   `;
   $$('#datoPersonalesUser').html(dataCardUser);
+
+  $$("#sLunes").on("click",function(){
+    seleccionDia="Lunes"
+    mainView.router.navigate('/reservaDia/');
+  });
+  $$("#sMartes").on("click",function(){
+    seleccionDia="Martes"
+    mainView.router.navigate('/reservaDia/');
+  });
+  $$("#sMiercoles").on("click",function(){
+    seleccionDia="Miercoles"
+    mainView.router.navigate('/reservaDia/');
+  });
+  $$("#sJueves").on("click",function(){
+    seleccionDia="Jueves"
+    mainView.router.navigate('/reservaDia/');
+  });
+  $$("#sViernes").on("click",function(){
+    seleccionDia="Viernes"
+    mainView.router.navigate('/reservaDia/');
+  });
+  
 
 
   
@@ -191,12 +194,13 @@ $$(document).on("page:init", '.page[data-name="panelAdmin"]', function (e) {
   
 });
 
-//Carga seccion de dias de reserva
-$$(document).on("page:init", '.page[data-name="reservaLunes"]', function (e) {
+$$(document).on("page:init", '.page[data-name="reservaDia"]', function (e) {
   // Do something here when page with data-name="about" attribute loaded and initialized
-
-  colLunes.get().then((querySnapshot) => {
-    var dtaLunes = "";
+  direccionBaseDatos=db.collection(`${seleccionDia}`);
+  console.log(seleccionDia);
+  
+  direccionBaseDatos.get().then((querySnapshot) => {
+    var dta = "";
     let botonesEstado = "";
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
@@ -205,15 +209,15 @@ $$(document).on("page:init", '.page[data-name="reservaLunes"]', function (e) {
       aula = doc.data().aulaSolicitada;
       cantidad = doc.data().cantidad;
       estado = doc.data().Estado;
-      horaLunes = doc.id;
+      horaDia = doc.id;
 
       if (estado == 0) {
-        botonesEstado = `<button id="hora${horaLunes}Lunes" class="col button button-fill color-green">Disponible</button>`;
+        botonesEstado = `<button id="hora${horaDia}Dia" class="col button button-fill color-green">Disponible</button>`;
       } else {
         botonesEstado = `<button  class="col button button-fill color-red" disabled>Ocupado</button>`;
       }
 
-      dtaLunes += `
+      dta += `
         <li class="item-content">
                     <div class="block block-strong">
                         <p class="row">
@@ -223,7 +227,7 @@ $$(document).on("page:init", '.page[data-name="reservaLunes"]', function (e) {
                     </div>
                     <div class="item-inner">
                       <div class="item-title-row">
-                        <div class="item-title">${horaLunes} Hora</div>
+                        <div class="item-title">${horaDia} Hora</div>
                         
                       </div>
                       <div class="item-subtitle">Nombre: ${nombreregistrado}</div>
@@ -235,167 +239,64 @@ $$(document).on("page:init", '.page[data-name="reservaLunes"]', function (e) {
         
         `;
     });
-    $$("#hLunes").html(dtaLunes);
-    console.log("termine de cargar los datos");
-    $$("#hora1Lunes").on("click",function(){
-      hsolicitadaLunes=1;
-      console.log(hsolicitadaLunes);
-      mainView.router.navigate('/1Lunes/');
+    
+    $$("#hdiaunico").html(dta);
+    $$("#hora1Dia").on("click",function(){
+      hSolicitadaDia=1;
+      
+      mainView.router.navigate('/reservaHora/');
     });
-    $$("#hora2Lunes").on("click",function(){
-      hsolicitadaLunes=2;
-      console.log(hsolicitadaLunes);
-      mainView.router.navigate('/1Lunes/');
+    $$("#hora2Dia").on("click",function(){
+      hSolicitadaDia=2;
+      
+      mainView.router.navigate('/reservaHora/');
     });
-    $$("#hora3Lunes").on("click",function(){
-      hsolicitadaLunes=3;
-      console.log(hsolicitadaLunes);
-      mainView.router.navigate('/1Lunes/');
+    $$("#hora3Dia").on("click",function(){
+      hSolicitadaDia=3;
+      
+      mainView.router.navigate('/reservaHora/');
     });
-    $$("#hora4Lunes").on("click",function(){
-      hsolicitadaLunes=4;
-      console.log(hsolicitadaLunes);
-      mainView.router.navigate('/1Lunes/');
+    $$("#hora4Dia").on("click",function(){
+      hSolicitadaDia=4;
+      
+      mainView.router.navigate('/reservaHora/');
     });
-  });
-  
-});
-$$(document).on("page:init", '.page[data-name="1Lunes"]', function (e) {
-  // Do something here when page with data-name="about" attribute loaded and initialized
-  $$("#rSolicitud1Lunes").on("click",reservarLunes);
-
-
-
-  
-});
-$$(document).on("page:init", '.page[data-name="reservaMartes"]', function (e) {
-  // Do something here when page with data-name="about" attribute loaded and initialized
-
-  console.log("Datos de martes xdddxxd");
-
-  colMartes.get().then((querySnapshot) => {
-    let dtaMartes = "";
-    let botonesEstado1 = "";
-    querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-
-      nombreregistrado1 = doc.data().nombreDocente;
-      aula = doc.data().aulaSolicitada;
-      cantidad = doc.data().cantidad;
-      estado = doc.data().Estado;
-      horaMartes = doc.id;
-
-      if (estado == 0) {
-        botonesEstado1 = `<button id="hora${horaMartes}Lunes" class="col button button-fill color-green">Disponible</button>`;
-      } else {
-        botonesEstado1 = `<button  class="col button button-fill color-red" disabled>Ocupado</button>`;
-      }
-
-      dtaMartes += `
-        <li class="item-content">
-                    <div class="block block-strong">
-                        <p class="row">
-                        ${botonesEstado1} 
-                        </p>
-                        
-                    </div>
-                    <div class="item-inner">
-                      <div class="item-title-row">
-                        <div class="item-title">${horaMartes} Hora</div>
-                        
-                      </div>
-                      <div class="item-subtitle">Nombre: ${nombreregistrado1}</div>
-                      <div class="item-subtitle">Aula: ${aula}</div>
-                      <div class="item-subtitle">Cantidad: ${cantidad}</div>
-                      
-                    </div>
-                  </li>
-        
-        `;
-        console.log("Cargando data xdxd "+dtaMartes);
-    });
-    console.log("Cargando data "+dtaMartes);
-    $$("#hMartes").html(dtaMartes);
-    console.log("termine de cargar los datos");
-    $$("#hora1Lunes").on("click",function(){
-      hsolicitadaMartes=1;
-      console.log(hsolicitadaMartes);
-      mainView.router.navigate('/1Martes/');
-    });
-    $$("#hora2Lunes").on("click",function(){
-      hsolicitadaMartes=2;
-      console.log(hsolicitadaMartes);
-      mainView.router.navigate('/1Martes/');
-    });
-    $$("#hora3Lunes").on("click",function(){
-      hsolicitadaMartes=3;
-      console.log(hsolicitadaMartes);
-      mainView.router.navigate('/1Martes/');
-    });
-    $$("#hora4Lunes").on("click",function(){
-      hsolicitadaMartes=4;
-      console.log(hsolicitadaMartes);
-      mainView.router.navigate('/1Martes/');
+    $$("#hora5Dia").on("click",function(){
+      hSolicitadaDia=5;
+      
+      mainView.router.navigate('/reservaHora/');
     });
   });
   
-  
-
 });
-$$(document).on("page:init", '.page[data-name="1Martes"]', function (e) {
+$$(document).on("page:init", '.page[data-name="reservaHora"]', function (e) {
   // Do something here when page with data-name="about" attribute loaded and initialized
-  $$("#rSolicitudMartes").on("click",reservarMartes);
+  $$("#rSolicitudRegistro").on("click",reservarHora);
 
 
 
   
 });
-$$(document).on("page:init", '.page[data-name="reservaMiercoles"]', function (e) {
-  // Do something here when page with data-name="about" attribute loaded and initialized
-  
-});
-$$(document).on("page:init", '.page[data-name="reservaJueves"]', function (e) {
-  // Do something here when page with data-name="about" attribute loaded and initialized
-  
-});
-$$(document).on("page:init", '.page[data-name="reservaViernes"]', function (e) {
-  // Do something here when page with data-name="about" attribute loaded and initialized
-  console.log("Viernes");
-  
-});
 
-//FUNCIONES RESERVA LUNES
-function reservarLunes(){
-  let aulaS=$$("#aulaSolicitada1Lunes").val();
-  let c1Lunes=$$("#cantidad1Lunes").val();
+//FUNCIONES RESERVA HORA DIA SELECCIONADO
+function reservarHora(){
+  let aulaSolicitadaHora=$$("#aulaSolicitada").val();
+  let canti=$$("#cantidadEquipos").val();
 
-  db.collection("Lunes").doc(`${hsolicitadaLunes}`).update({
+  db.collection(`${seleccionDia}`).doc(`${hSolicitadaDia}`).update({
     Estado: 1,
-    aulaSolicitada:`${aulaS}`,
-    cantidad:c1Lunes,
+    aulaSolicitada:`${aulaSolicitadaHora}`,
+    cantidad:canti,
     nombreDocente:`${nombre} ${apellido}`
   })
   .then(() => {
-    mainView.router.navigate('/reservaLunes/');
+    mainView.router.navigate('/reservaDia/');
   });
 }
 
-//FUNCION RESERVA MARTES
 
-function reservarMartes(){
-  let aulaS=$$("#aulaSolicitadaMartes").val();
-  let c1Lunes=$$("#cantidadMartes").val();
 
-  db.collection("Martes").doc(`${hsolicitadaMartes}`).update({
-    Estado: 1,
-    aulaSolicitada:`${aulaS}`,
-    cantidad:c1Lunes,
-    nombreDocente:`${nombre} ${apellido}`
-  })
-  .then(() => {
-    mainView.router.navigate('/reservaMartes/');
-  });
-}
+
 //FUnciones de acciones del programa
 
 function fnRegistroFin(){
