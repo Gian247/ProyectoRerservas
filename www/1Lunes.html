@@ -1,0 +1,74 @@
+<!-- We don't need a full layout in this file because this page will be parsed with Ajax.  -->
+<div class="page" data-name="1Lunes">
+    <div class="navbar">
+        <div class="navbar-inner sliding">
+        <div class="left">
+            <a href="#" class="link back">
+            <i class="icon icon-back"></i>
+            <span class="ios-only">Back</span>
+            </a>
+        </div>
+        <div class="title">Ingrese los datos de la solicitud</div>
+        </div>
+    </div>
+    <div class="page-content">
+        <!-- Aca comienza el codigo -->
+
+        <form action="">
+          <div class="block-title">Ingrese los datos necesarios</div>
+          <div class="list no-hairlines-md">
+            <ul>
+          
+              <li class="item-content item-input item-input-with-info">
+                <div class="item-media">
+                  <i class="icon demo-list-icon"></i>
+                </div>
+                <div class="item-inner">
+                  <div class="item-title item-label">Aula solicitada</div>
+                  <div class="item-input-wrap">
+                    <select name="aulaGrado" id="aulaSolicitada1Lunes" required validate>
+                      <option value="">--Seleccione salon--</option>
+                      <option value="8-Bach">8 Bach</option>
+                      <option value="9-Garcia">9 Garcia</option>
+                      <option value="9-Allende">9 Allende</option>
+                      <option value="10-Vargas">10 Vargas</option>
+                      <option value="11-Matto">11 Matto</option>
+                    </select>
+                    <span class="input-clear-button"></span>
+                    <div class="item-input-info"></div>
+                  </div>
+                </div>
+              </li>
+          
+              <li class="item-content item-input item-input-with-info">
+                <div class="item-media">
+                  <i class="icon demo-list-icon"></i>
+                </div>
+                <div class="item-inner">
+                  <div class="item-title item-label">Ingrese la cantidad de equipos</div>
+                  <div class="item-input-wrap">
+                    <input type="text" id="cantidad1Lunes" placeholder="Enter number" required validate pattern="[0-9]*"
+                      data-error-message="Only numbers please!" />
+                    <span class="input-clear-button"></span>
+                    <div class="item-input-info"></div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+          
+
+
+        </form>
+        <div class="block">
+          <button id="rSolicitud1Lunes">Registrar solicitud</button>
+        </div>
+        
+          
+
+
+      
+        <!-- Aca termina el codigo -->
+
+    </div>
+</div>
