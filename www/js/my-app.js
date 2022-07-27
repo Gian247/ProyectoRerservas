@@ -42,6 +42,10 @@ var app = new Framework7({
       path:"/reservaHora/",
       url:"reservaHora.html",
     },
+    {
+      path:"/visualizarHorario/",
+      url:"visualizarHorario.html",
+    },
     
   ],
   // ... other parameters
@@ -145,6 +149,10 @@ $$(document).on("page:init", '.page[data-name="panelUser"]', function (e) {
 
   
 });
+
+//*******CARGANDO PAGINA PRINCIPAL DEL  USUARIOS******* *//
+
+
 $$(document).on("page:init", '.page[data-name="panelAdmin"]', function (e) {
   // Do something here when page with data-name="about" attribute loaded and initialized
   
@@ -167,6 +175,7 @@ $$(document).on("page:init", '.page[data-name="panelAdmin"]', function (e) {
 
               listaUser+=`
               <div class="card card-outline">
+                
                 <div class="card-header">Correo Identificador: ${emailUserCard}</div>
                 <div class="card-content card-content-padding">
                   <div class="row">
@@ -185,6 +194,7 @@ $$(document).on("page:init", '.page[data-name="panelAdmin"]', function (e) {
 
         });
         $$('#datosCuentasUsuarios').html(listaUser);
+        $$("#pagfooter").html(`<a href="#" class="link"><i class="fa-solid fa-arrow-rotate-left"></i></a><a href="#" class="link">Link 2</a><a href="/visualizarHorario/" class="link"><i class="fa-solid fa-arrow-rotate-left"></i></a>`);
         
     })
     .catch((error) => {
@@ -193,6 +203,8 @@ $$(document).on("page:init", '.page[data-name="panelAdmin"]', function (e) {
 
   
 });
+
+//****CARGANDO LOS DIAS DISPONIBLES PARA SELECCION */
 
 $$(document).on("page:init", '.page[data-name="reservaDia"]', function (e) {
   // Do something here when page with data-name="about" attribute loaded and initialized
@@ -273,6 +285,221 @@ $$(document).on("page:init", '.page[data-name="reservaHora"]', function (e) {
   // Do something here when page with data-name="about" attribute loaded and initialized
   $$("#rSolicitudRegistro").on("click",reservarHora);
 
+});
+
+//Funciones del administrador
+$$(document).on("page:init", '.page[data-name="visualizarHorario"]', function (e) {
+  // Do something here when page with data-name="about" attribute loaded and initialized
+  var dtaAdmin = "";
+  var dActual;
+  for(i=0;i<6;i++){
+    
+    switch (i) {
+      case 1:
+        
+        direccionBaseDatos = db.collection(`Lunes`);
+        
+        direccionBaseDatos.get().then((querySnapshot) => {
+          dActual="Lunes";
+          
+
+          querySnapshot.forEach((doc) => {
+            // doc.data() is never undefined for query doc snapshots
+
+            nombreregistrado = doc.data().nombreDocente;
+            aula = doc.data().aulaSolicitada;
+            cantidad = doc.data().cantidad;
+            estado = doc.data().Estado;
+            horaDia = doc.id;
+
+            dtaAdmin += `
+              <li class="item-content">
+                          
+                          <div class="item-inner">
+                            <div class="block-title">${dActual}</div>
+                            <div class="item-title-row">
+                              <div class="item-title">${horaDia} Hora</div>
+                              
+                            </div>
+                            <div class="item-subtitle">Nombre: ${nombreregistrado}</div>
+                            <div class="item-subtitle">Aula: ${aula}</div>
+                            <div class="item-subtitle">Cantidad: ${cantidad}</div>
+                            
+                          </div>
+                        </li>
+              
+              `;
+          });
+          $$("#vhReservadas").html(dtaAdmin);
+          
+        });
+      
+        break;
+      case 2:
+        
+        
+        direccionBaseDatos = db.collection(`Martes`);
+        direccionBaseDatos.get().then((querySnapshot) => {
+          dActual="Martes";
+          querySnapshot.forEach((doc) => {
+            // doc.data() is never undefined for query doc snapshots
+      
+            nombreregistrado = doc.data().nombreDocente;
+            aula = doc.data().aulaSolicitada;
+            cantidad = doc.data().cantidad;
+            estado = doc.data().Estado;
+            horaDia = doc.id;
+      
+            
+      
+            dtaAdmin += `
+              <li class="item-content">
+                          
+                          <div class="item-inner">
+                            <div class="block-title">${dActual}</div>
+                            <div class="item-title-row">
+                              <div class="item-title">${horaDia} Hora</div>
+                              
+                            </div>
+                            <div class="item-subtitle">Nombre: ${nombreregistrado}</div>
+                            <div class="item-subtitle">Aula: ${aula}</div>
+                            <div class="item-subtitle">Cantidad: ${cantidad}</div>
+                            
+                          </div>
+                        </li>
+              
+              `;
+          });
+          $$("#vhReservadas").html(dtaAdmin);
+          
+        });
+      
+        break;
+      case 3:
+        
+        direccionBaseDatos = db.collection(`Miercoles`);
+        direccionBaseDatos.get().then((querySnapshot) => {
+          
+          dActual="Miercoles";
+          querySnapshot.forEach((doc) => {
+            // doc.data() is never undefined for query doc snapshots
+      
+            nombreregistrado = doc.data().nombreDocente;
+            aula = doc.data().aulaSolicitada;
+            cantidad = doc.data().cantidad;
+            estado = doc.data().Estado;
+            horaDia = doc.id;
+      
+            
+      
+            dtaAdmin += `
+              <li class="item-content">
+                          
+                          <div class="item-inner">
+                            <div class="block-title">${dActual}</div>
+                            <div class="item-title-row">
+                              <div class="item-title">${horaDia} Hora</div>
+                              
+                            </div>
+                            <div class="item-subtitle">Nombre: ${nombreregistrado}</div>
+                            <div class="item-subtitle">Aula: ${aula}</div>
+                            <div class="item-subtitle">Cantidad: ${cantidad}</div>
+                            
+                          </div>
+                        </li>
+              
+              `;
+          });
+          $$("#vhReservadas").html(dtaAdmin);
+          
+        });
+      
+        break;
+      case 4:
+        
+        
+        direccionBaseDatos = db.collection(`Jueves`);
+        direccionBaseDatos.get().then((querySnapshot) => {
+          dActual="Jueves";
+          querySnapshot.forEach((doc) => {
+            // doc.data() is never undefined for query doc snapshots
+      
+            nombreregistrado = doc.data().nombreDocente;
+            aula = doc.data().aulaSolicitada;
+            cantidad = doc.data().cantidad;
+            estado = doc.data().Estado;
+            horaDia = doc.id;
+      
+            
+      
+            dtaAdmin += `
+              <li class="item-content">
+                          
+                          <div class="item-inner">
+                            <div class="block-title">${dActual}</div>
+                            <div class="item-title-row">
+                              <div class="item-title">${horaDia} Hora</div>
+                              
+                            </div>
+                            <div class="item-subtitle">Nombre: ${nombreregistrado}</div>
+                            <div class="item-subtitle">Aula: ${aula}</div>
+                            <div class="item-subtitle">Cantidad: ${cantidad}</div>
+                            
+                          </div>
+                        </li>
+              
+              `;
+          });
+          $$("#vhReservadas").html(dtaAdmin);
+          
+        });
+      
+        break;
+      case 5:
+        
+        
+        direccionBaseDatos = db.collection(`Viernes`);
+        direccionBaseDatos.get().then((querySnapshot) => {
+          dActual="Viernes";
+        
+          querySnapshot.forEach((doc) => {
+            // doc.data() is never undefined for query doc snapshots
+      
+            nombreregistrado = doc.data().nombreDocente;
+            aula = doc.data().aulaSolicitada;
+            cantidad = doc.data().cantidad;
+            estado = doc.data().Estado;
+            horaDia = doc.id;
+      
+            
+      
+            dtaAdmin += `
+              <li class="item-content">
+                          
+                          <div class="item-inner">
+                            <div class="item-title-row">
+                              <div class="item-title">${horaDia} Hora</div>
+                              
+                            </div>
+                            <div class="item-subtitle">Nombre: ${nombreregistrado}</div>
+                            <div class="item-subtitle">Aula: ${aula}</div>
+                            <div class="item-subtitle">Cantidad: ${cantidad}</div>
+                            
+                          </div>
+                        </li>
+              
+              `;
+          });
+          $$("#vhReservadas").html(dtaAdmin);
+          
+        });
+      
+        break;
+    }
+    
+  }
+  
+    
 
 
   
@@ -295,9 +522,7 @@ function reservarHora(){
 }
 
 
-
-
-//FUnciones de acciones del programa
+//******** FUNCIONES DE ACCIONES DEL PROGRAMA *********/
 
 function fnRegistroFin(){
   //Obtiene el valor de la varible de email para adjuntar en ese identificador sus datos
