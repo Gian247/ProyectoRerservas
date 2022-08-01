@@ -290,6 +290,7 @@ $$(document).on("page:init", '.page[data-name="reservaHora"]', function (e) {
 //Funciones del administrador
 $$(document).on("page:init", '.page[data-name="visualizarHorario"]', function (e) {
   // Do something here when page with data-name="about" attribute loaded and initialized
+  $$("#btnResetData").on("clik",resetData);
   var dtaAdmin = "";
   var dActual;
   for(i=0;i<6;i++){
@@ -314,9 +315,13 @@ $$(document).on("page:init", '.page[data-name="visualizarHorario"]', function (e
 
             dtaAdmin += `
               <li class="item-content">
-                          
-                          <div class="item-inner">
+                          <div class="block block-strong">
                             <div class="block-title">${dActual}</div>
+                        
+                          </div>
+                         
+                          <div class="item-inner">
+                            
                             <div class="item-title-row">
                               <div class="item-title">${horaDia} Hora</div>
                               
@@ -354,9 +359,12 @@ $$(document).on("page:init", '.page[data-name="visualizarHorario"]', function (e
       
             dtaAdmin += `
               <li class="item-content">
-                          
-                          <div class="item-inner">
+                          <div class="block block-strong">
                             <div class="block-title">${dActual}</div>
+                        
+                          </div>
+                          <div class="item-inner">
+                            
                             <div class="item-title-row">
                               <div class="item-title">${horaDia} Hora</div>
                               
@@ -394,9 +402,12 @@ $$(document).on("page:init", '.page[data-name="visualizarHorario"]', function (e
       
             dtaAdmin += `
               <li class="item-content">
-                          
-                          <div class="item-inner">
+                          <div class="block block-strong">
                             <div class="block-title">${dActual}</div>
+                        
+                          </div>
+                          <div class="item-inner">
+                            
                             <div class="item-title-row">
                               <div class="item-title">${horaDia} Hora</div>
                               
@@ -434,7 +445,10 @@ $$(document).on("page:init", '.page[data-name="visualizarHorario"]', function (e
       
             dtaAdmin += `
               <li class="item-content">
-                          
+                          <div class="block block-strong">
+                            <div class="block-title">${dActual}</div>
+                        
+                          </div>
                           <div class="item-inner">
                             <div class="block-title">${dActual}</div>
                             <div class="item-title-row">
@@ -475,7 +489,10 @@ $$(document).on("page:init", '.page[data-name="visualizarHorario"]', function (e
       
             dtaAdmin += `
               <li class="item-content">
-                          
+                          <div class="block block-strong">
+                            <div class="block-title">${dActual}</div>
+                        
+                          </div>
                           <div class="item-inner">
                             <div class="item-title-row">
                               <div class="item-title">${horaDia} Hora</div>
@@ -499,11 +516,40 @@ $$(document).on("page:init", '.page[data-name="visualizarHorario"]', function (e
     
   }
   
-    
+    console.log("homa lrdss")
 
 
   
 });
+
+$$(document).on("page:init", '.page[data-name="visualizarDataUsers"]', function (e) {
+  // Do something here when page with data-name="about" attribute loaded and initialized
+  $$("#rSolicitudRegistro").on("click",reservarHora);
+
+});
+
+
+
+function resetData(){
+
+  console.log("Entre a la funcion de reseteo")
+  let vdia=$$("#selectDiaReset").val();
+  for(i=0;i<5;i++){
+    db.collection(`${vdia}`).doc(`${i}`).update({
+      Estado: 0,
+      aulaSolicitada:`Libre`,
+      cantidad:0,
+      nombreDocente:`Libre`
+    })
+    .then(() => {
+      mainView.router.navigate('/visualizarHorario/');
+    });
+
+  }
+  
+
+
+}
 
 //FUNCIONES RESERVA HORA DIA SELECCIONADO
 function reservarHora(){
