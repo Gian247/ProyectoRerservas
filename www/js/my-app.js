@@ -59,7 +59,7 @@ var app = new Framework7({
 var mainView = app.views.create(".view-main");
 var db,email;
 var colPersonas;
-var rol="developer";
+var rol="docente";
 var seleccionDia;
 var direccionBaseDatos;
 var hSolicitadaDia;
@@ -119,10 +119,12 @@ $$(document).on("page:init", '.page[data-name="registro-datos"]', function (e) {
 
 $$(document).on("page:init", '.page[data-name="panelUser"]', function (e) {
   // Do something here when page with data-name="about" attribute loaded and initialized
+  $$("#pagfooter").html(`<a href="#" class="link "></a><a href="#" class="link "></a><a href="/index/" class="link "><i class="fa-solid fa-arrow-right-from-bracket"> </i> Cerrar sesion</a>`);
   dataCardUser=`
     <div class="card card-outline">
       <div class="card-header">Bienvenido ${nombre} ${apellido}</div>
-      <div class="card-content card-content-padding">Pais de procedencia: ${pais}</div>
+      <div class="card-content card-content-padding">Documento de identiad: ${documento}</div>
+      <div class="card-content card-content-padding">Nacionalidad: ${pais}</div>
       <div class="card-footer">Cargo en la institución: ${rol}</div>
     </div>
   `;
@@ -160,8 +162,15 @@ $$(document).on("page:init", '.page[data-name="panelUser"]', function (e) {
 $$(document).on("page:init", '.page[data-name="panelAdmin"]', function (e) {
   // Do something here when page with data-name="about" attribute loaded and initialized
   
-  
-  $$("#pagfooter").html(`<a href="#" class="link"><i class="fa-solid fa-arrow-rotate-left"></i></a><a href="/visualizarDataUsers/" class="link">Link 2</a><a href="/visualizarHorario/" class="link"><i class="fa-solid fa-arrow-rotate-left"></i></a>`);
+  dataCardUser=`
+    <div class="card card-outline">
+      <div class="card-header">Datos de su perfil de administrador</div>
+      <div class="card-content card-content-padding">Nombre: ${nombre}</div>
+      <div class="card-footer">Cargo en la institución: Area de TI</div>
+    </div>
+  `;
+  $$('#datoPersonalesAdmin').html(dataCardUser);
+  $$("#pagfooter").html(`<a href="/panelAdmin/" class="link"><i class="fa-solid fa-house-user"></i></a><a  href="/visualizarDataUsers/" class="link"><i class="fa-solid fa-users"></i></a><a href="/visualizarHorario/" class="link"><i class="fa-solid fa-calendar-check"></i></a><a href="/index/" class="link "><i class="fa-solid fa-arrow-right-from-bracket"> </i></a>`);
 });
 
 //****CARGANDO LOS DIAS DISPONIBLES PARA SELECCION */
@@ -484,7 +493,7 @@ $$(document).on("page:init", '.page[data-name="visualizarHorario"]', function (e
 
 $$(document).on("page:init", '.page[data-name="visualizarDataUsers"]', function (e) {
   // Do something here when page with data-name="about" attribute loaded and initialized
-  colPersonas.where("rol", "==", "developer")
+  colPersonas.where("rol", "==", "docente")
     .get()
     .then((querySnapshot) => {
       var listaUser="";
@@ -495,8 +504,8 @@ $$(document).on("page:init", '.page[data-name="visualizarDataUsers"]', function 
               nombre=doc.data().nombre;
               apellido=doc.data().apellido;
               pais=doc.data().pais;
-              hora=doc.data().hora;
-              fechahora=doc.data().fechaHora;
+              documento=doc.data().dni;
+              
               rolUsuario=doc.data().rol;
               emailUserCard=doc.id;
               
@@ -504,12 +513,12 @@ $$(document).on("page:init", '.page[data-name="visualizarDataUsers"]', function 
               listaUser+=`
               <div class="card card-outline">
                 
-                <div class="card-header">Correo Identificador: ${emailUserCard}</div>
+                <div class="card-header">Usuario: ${nombre} ${apellido}</div>
                 <div class="card-content card-content-padding">
                   <div class="row">
-                    <div class="col-100">Nombre: ${nombre}</div>
-                    <div class="col-100">Apellido: ${apellido}</div>
-                    <div class="col-100">Pais: ${pais}</div>
+                    <div class="col-100">Correo electronico: ${emailUserCard}</div>
+                    <div class="col-100">DNI: ${documento}</div>
+                    <div class="col-100">Nacionalidad: ${pais}</div>
                   </div>
                 </div>
                 <div class="card-footer">Cargo en la institución: ${rolUsuario}</div>
@@ -583,8 +592,8 @@ function fnRegistroFin(){
   nombre=$$('#rNombre').val();
   apellido=$$('#rApellido').val();
   pais=$$('#rPais').val();
-  hora=$$('#rHora').val();
-  fechaHora=$$('#rFechaHora').val();
+  dni=$$('#rDNI').val();
+  
 
   //Construyo el objeto de datos JSON:
 
@@ -592,8 +601,7 @@ function fnRegistroFin(){
     nombre:nombre,
     apellido:apellido,
     pais:pais,
-    hora:hora,
-    fechaHora:fechaHora,
+    dni:dni,
     rol:rol
   }
   colPersonas.doc(elId).set(datos)
@@ -663,8 +671,7 @@ function fnIngresa() {
               nombre=doc.data().nombre;
               apellido=doc.data().apellido;
               pais=doc.data().pais;
-              hora=doc.data().hora;
-              fechahora=doc.data().fechaHora;
+              documento=doc.data().dni
               rolUsuario=doc.data().rol;
               if(rolUsuario=="admin"){
                 mainView.router.navigate('/panelAdmin/');
