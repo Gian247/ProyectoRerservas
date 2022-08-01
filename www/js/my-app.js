@@ -46,6 +46,10 @@ var app = new Framework7({
       path:"/visualizarHorario/",
       url:"visualizarHorario.html",
     },
+    {
+      path:"/visualizarDataUsers/",
+      url:"visualizarDataUsers.html",
+    },
     
   ],
   // ... other parameters
@@ -156,52 +160,8 @@ $$(document).on("page:init", '.page[data-name="panelUser"]', function (e) {
 $$(document).on("page:init", '.page[data-name="panelAdmin"]', function (e) {
   // Do something here when page with data-name="about" attribute loaded and initialized
   
-  colPersonas.where("rol", "==", "developer")
-    .get()
-    .then((querySnapshot) => {
-      var listaUser="";
-        querySnapshot.forEach((doc) => {
-            // doc.data() is never undefined for query doc snapshots
-            //console.log(doc.id, " => ", doc.data().nombre);
-            
-              nombre=doc.data().nombre;
-              apellido=doc.data().apellido;
-              pais=doc.data().pais;
-              hora=doc.data().hora;
-              fechahora=doc.data().fechaHora;
-              rolUsuario=doc.data().rol;
-              emailUserCard=doc.id;
-              
-
-              listaUser+=`
-              <div class="card card-outline">
-                
-                <div class="card-header">Correo Identificador: ${emailUserCard}</div>
-                <div class="card-content card-content-padding">
-                  <div class="row">
-                    <div class="col-100">Nombre: ${nombre}</div>
-                    <div class="col-100">Apellido: ${apellido}</div>
-                    <div class="col-100">Pais: ${pais}</div>
-                  </div>
-                </div>
-                <div class="card-footer">Cargo en la institución: ${rolUsuario}</div>
-              </div>
-              `;
-
-              console.log(listaUser);
-              
-             
-
-        });
-        $$('#datosCuentasUsuarios').html(listaUser);
-        $$("#pagfooter").html(`<a href="#" class="link"><i class="fa-solid fa-arrow-rotate-left"></i></a><a href="#" class="link">Link 2</a><a href="/visualizarHorario/" class="link"><i class="fa-solid fa-arrow-rotate-left"></i></a>`);
-        
-    })
-    .catch((error) => {
-        console.log("Error getting documents: ", error);
-    });
-
   
+  $$("#pagfooter").html(`<a href="#" class="link"><i class="fa-solid fa-arrow-rotate-left"></i></a><a href="/visualizarDataUsers/" class="link">Link 2</a><a href="/visualizarHorario/" class="link"><i class="fa-solid fa-arrow-rotate-left"></i></a>`);
 });
 
 //****CARGANDO LOS DIAS DISPONIBLES PARA SELECCION */
@@ -450,7 +410,7 @@ $$(document).on("page:init", '.page[data-name="visualizarHorario"]', function (e
                         
                           </div>
                           <div class="item-inner">
-                            <div class="block-title">${dActual}</div>
+                            
                             <div class="item-title-row">
                               <div class="item-title">${horaDia} Hora</div>
                               
@@ -524,7 +484,51 @@ $$(document).on("page:init", '.page[data-name="visualizarHorario"]', function (e
 
 $$(document).on("page:init", '.page[data-name="visualizarDataUsers"]', function (e) {
   // Do something here when page with data-name="about" attribute loaded and initialized
-  $$("#rSolicitudRegistro").on("click",reservarHora);
+  colPersonas.where("rol", "==", "developer")
+    .get()
+    .then((querySnapshot) => {
+      var listaUser="";
+        querySnapshot.forEach((doc) => {
+            // doc.data() is never undefined for query doc snapshots
+            //console.log(doc.id, " => ", doc.data().nombre);
+            
+              nombre=doc.data().nombre;
+              apellido=doc.data().apellido;
+              pais=doc.data().pais;
+              hora=doc.data().hora;
+              fechahora=doc.data().fechaHora;
+              rolUsuario=doc.data().rol;
+              emailUserCard=doc.id;
+              
+
+              listaUser+=`
+              <div class="card card-outline">
+                
+                <div class="card-header">Correo Identificador: ${emailUserCard}</div>
+                <div class="card-content card-content-padding">
+                  <div class="row">
+                    <div class="col-100">Nombre: ${nombre}</div>
+                    <div class="col-100">Apellido: ${apellido}</div>
+                    <div class="col-100">Pais: ${pais}</div>
+                  </div>
+                </div>
+                <div class="card-footer">Cargo en la institución: ${rolUsuario}</div>
+              </div>
+              `;
+
+              console.log(listaUser);
+              
+             
+
+        });
+        $$('#datosCuentasUsuarios').html(listaUser);
+        
+        
+    })
+    .catch((error) => {
+        console.log("Error getting documents: ", error);
+    });
+
 
 });
 
@@ -534,7 +538,7 @@ function resetData(){
 
   console.log("Entre a la funcion de reseteo")
   let vdia=$$("#selectDiaReset").val();
-  for(i=0;i<5;i++){
+  for(i=1;i<5;i++){
     db.collection(`${vdia}`).doc(`${i}`).update({
       Estado: 0,
       aulaSolicitada:`Libre`,
@@ -542,7 +546,7 @@ function resetData(){
       nombreDocente:`Libre`
     })
     .then(() => {
-      mainView.router.navigate('/visualizarHorario/');
+      mainView.router.navigate('/panelAdmin/');
     });
 
   }
